@@ -1109,58 +1109,6 @@ elif opcion == "📥 Importar riesgos Excel":
 
             st.divider()
 
-            modo = st.radio(
-                "¿Cómo desea cargar los riesgos?",
-                [
-                    "Reemplazar registro actual",
-                    "Agregar al registro actual"
-                ]
-            )
-
-            if st.button(
-                "📥 Confirmar importación",
-                type="primary",
-                use_container_width=True
-            ):
-
-                if modo == "Reemplazar registro actual":
-
-                    st.session_state.riesgos = (
-                        df_importado
-                    )
-
-                else:
-
-                    df_actual = (
-                        st.session_state.riesgos
-                    )
-
-                    if df_actual.empty:
-
-                        st.session_state.riesgos = (
-                            df_importado
-                        )
-
-                    else:
-
-                        st.session_state.riesgos = pd.concat(
-                            [
-                                df_actual,
-                                df_importado
-                            ],
-                            ignore_index=True
-                        )
-
-                st.session_state.informe_ia = ""
-
-                st.session_state.estado_cargue = "CARGADO"
-
-                st.success(
-                    "Los riesgos fueron incorporados correctamente."
-                )
-
-                st.rerun()
-
         except Exception as error:
 
             st.error(

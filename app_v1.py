@@ -905,6 +905,10 @@ if "informe_ia" not in st.session_state:
     st.session_state.informe_ia = ""
 
 
+if "estado_cargue" not in st.session_state:
+
+    st.session_state.estado_cargue = ""
+
 # ============================================================
 # ENCABEZADO
 # ============================================================
@@ -1049,6 +1053,12 @@ elif opcion == "📥 Importar riesgos Excel":
 
     st.header("📥 Importar riesgos desde Excel")
 
+    if st.session_state.estado_cargue == "CARGADO":
+
+        st.success(
+            "📥 Estado del cargue: CARGADO"
+        )
+
     st.markdown(
         """
         Cargue un archivo **.xlsx** con los riesgos previamente
@@ -1142,6 +1152,8 @@ elif opcion == "📥 Importar riesgos Excel":
                         )
 
                 st.session_state.informe_ia = ""
+
+                st.session_state.estado_cargue = "CARGADO"
 
                 st.success(
                     "Los riesgos fueron incorporados correctamente."

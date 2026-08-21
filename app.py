@@ -905,6 +905,10 @@ if "informe_ia" not in st.session_state:
     st.session_state.informe_ia = ""
 
 
+if "estado_cargue" not in st.session_state:
+
+    st.session_state.estado_cargue = ""
+
 # ============================================================
 # ENCABEZADO
 # ============================================================
@@ -1049,6 +1053,12 @@ elif opcion == "📥 Importar riesgos Excel":
 
     st.header("📥 Importar riesgos desde Excel")
 
+    if st.session_state.estado_cargue == "CARGADO":
+
+        st.success(
+            "📥 Estado del cargue: CARGADO"
+        )
+
     st.markdown(
         """
         Cargue un archivo **.xlsx** con los riesgos previamente
@@ -1082,6 +1092,10 @@ elif opcion == "📥 Importar riesgos Excel":
                 archivo
             )
 
+            st.session_state.riesgos = df_importado.copy()
+            st.session_state.estado_cargue = "CARGADO"
+            st.session_state.informe_ia = ""
+
             st.success(
                 f"Archivo cargado correctamente: "
                 f"{len(df_importado)} riesgos."
@@ -1098,56 +1112,6 @@ elif opcion == "📥 Importar riesgos Excel":
             )
 
             st.divider()
-
-            modo = st.radio(
-                "¿Cómo desea cargar los riesgos?",
-                [
-                    "Reemplazar registro actual",
-                    "Agregar al registro actual"
-                ]
-            )
-
-            if st.button(
-                "📥 Confirmar importación",
-                type="primary",
-                use_container_width=True
-            ):
-
-                if modo == "Reemplazar registro actual":
-
-                    st.session_state.riesgos = (
-                        df_importado
-                    )
-
-                else:
-
-                    df_actual = (
-                        st.session_state.riesgos
-                    )
-
-                    if df_actual.empty:
-
-                        st.session_state.riesgos = (
-                            df_importado
-                        )
-
-                    else:
-
-                        st.session_state.riesgos = pd.concat(
-                            [
-                                df_actual,
-                                df_importado
-                            ],
-                            ignore_index=True
-                        )
-
-                st.session_state.informe_ia = ""
-
-                st.success(
-                    "Los riesgos fueron incorporados correctamente."
-                )
-
-                st.rerun()
 
         except Exception as error:
 
